@@ -1,0 +1,42 @@
+// version 1: using vectors to store each letter's start and end position and then loop through the string again
+vector<int> partitionLabels(string S) {
+        vector<int> end (26);
+        vector<int> start(26,0);
+        vector<int> res;
+        int prev = 0;
+        int size = S.size();
+        for (int i = 0; i < size; i++){
+            end[int(S[i]) - 97] = i;
+            if (start[int(S[i]) - 97] == 0){start[int(S[i]) - 97] = i;}
+        }
+        int cur = end[int(S[0] - 97)];
+        for (int i = 0; i < size; i++){
+            if (cur < end[int(S[i] - 97)]){
+                cur = end[int(S[i] - 97)];
+            }
+            if (cur == i){
+                res.push_back(cur - prev + 1);
+                prev = cur + 1;
+            }
+        }
+
+        return res;
+        }
+// use unordered_map to only store the end position, takes longer time than previous solution, should be the max function lengthen the time
+ vector<int> partitionLabels(string S) {
+        unordered_map<char,int> map;
+        vector<int> res;
+        int size = S.size();
+        int start = 0, end = 0;
+        for (int i = 0; i < size; i++){
+            map[S[i]] = i;
+        }
+        for (int i = 0; i < size; i++){
+            end = max(end, map[S[i]]);
+            if (end == i){
+                res.push_back(end - start + 1);
+                start = end + 1;
+            }
+        }
+        return res;
+    }
