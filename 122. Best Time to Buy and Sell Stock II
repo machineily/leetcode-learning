@@ -1,0 +1,40 @@
+// greedy algorithm
+int maxProfit(vector<int>& prices) {
+        int res;
+        for (int i = 1; i < prices.size(); i++){
+            if (prices[i] > prices[i - 1]){
+                res += prices[i] - prices[i - 1];
+            }
+        }
+        return res;
+    }
+//dynamic arrangement
+int maxProfit(vector<int>& prices) {
+        int res;
+        int n = prices.size();
+        int cur[n][2];
+        cur[0][0] = 0;
+        cur[0][1] = -1*prices[0];
+        for (int i = 1; i < prices.size(); i++){
+            cur[i][0] = max(cur[i - 1][0] , cur[i - 1][1] + prices[i]);
+            cur[i][1] = max(cur[i - 1][1] , cur[i - 1][0] - prices[i]);
+        }
+        return cur[n - 1][0];
+        }
+// improved version 
+int maxProfit(vector<int>& prices) {
+        int res;
+        int n = prices.size();
+        int nth = 0;// have
+        int have = -1*prices[0];// not have
+        int nhave;// new have
+        int nnth;// new not have
+        for (int i = 1; i < prices.size(); i++){
+            nhave = max(have, nth - prices[i]);
+            nnth = max(nth, have + prices[i]);
+            have = nhave;
+            nth = nnth;
+        }
+        return nth;
+    }
+    
