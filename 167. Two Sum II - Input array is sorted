@@ -1,0 +1,14 @@
+vector<int> twoSum(vector<int>& numbers, int target) {
+        int a = 0, b = numbers.size() - 1;
+        while (numbers[a] + numbers[b] != target){
+        //used additional space of sum here instead of 
+        //directly put numbers[a] + numbers[b] 
+        //in the ifelse statement could reduce
+        //the operating time
+            int sum = numbers[a] + numbers[b];
+            if (sum > target){b--;}
+            else{a ++;}
+        }
+        vector<int> res{a + 1, b + 1};
+        return res;
+    }
