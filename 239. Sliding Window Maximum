@@ -1,0 +1,39 @@
+//using priority queue
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        priority_queue<pair<int, int>> q;
+        int n = nums.size();
+        for (int i = 0; i < k; i++){
+            q.emplace(nums[i], i);
+        }
+        vector<int> res{q.top().first};
+        for (int i = k; i < n; i++){
+            q.emplace(nums[i], i);
+            while (q.top().second <= i - k){
+                q.pop();
+            }
+            
+            res.push_back(q.top().first);
+        }
+        return res;
+    }
+//using deque
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        deque<int> q;
+        int n = nums.size();
+        for (int i = 0; i < k; i++){
+            while (!q.empty() && nums[i] >= nums[q.back()]){
+                q.pop_back();
+            }
+            q.push_back(i);
+        }
+        vector<int> res{nums[q.front()]};
+        for (int i = k; i < n; i++){;
+            while (!q.empty() && nums[i] >= nums[q.back()]){
+                q.pop_back();
+            }
+            q.push_back(i);
+            while (q.front() <= i - k){q.pop_front();}
+            res.push_back(nums[q.front()]);
+        }
+        return res;
+    }
